@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="tokyo-night">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lab Programs - Ultimate (Full)</title>
+
+  <!-- Prism base stylesheet (optional visual fallback) -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+
+  <!-- Prism scripts (defer, correct order) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+
+  <style>
+    /* =================================================
+       THEMES (dark + light variations)
+       ================================================= */
+    :root[data-theme="tokyo-night"]{
+      --bg:#1a1b26; --card-bg:#16161e; --header-bg:#1a1b26cc; --border:#292e42;
+      --text:#c0caf5; --accent:#7aa2f7; --keyword:#bb9af7; --string:#9ece6a;
+      --function:#7aa2f7; --number:#ff9e64; --comment:#565f89; --tag:#f7768e; --operator:#89ddff;
+    }
+    :root[data-theme="tokyo-night-deep"]{
+      --bg:#100f18; --card-bg:#0e0e15; --header-bg:#100f18cc; --border:#1f2230;
+      --text:#bfc8f4; --accent:#6e98e8; --keyword:#a57af0; --string:#94c85f;
+      --function:#6e98e8; --number:#ff8f4f; --comment:#4f547a; --tag:#ef7a93; --operator:#7fcfff;
+    }
+    :root[data-theme="tokyo-night-berry"]{
+      --bg:#171422; --card-bg:#14121b; --header-bg:#171422cc; --border:#2a2740;
+      --text:#d0c8f8; --accent:#9b84f1; --keyword:#caa6ff; --string:#9bdc7a;
+      --function:#9b84f1; --number:#ffb37a; --comment:#5a5773; --tag:#ff7fb6; --operator:#8fdfff;
+    }
+    :root[data-theme="dracula"]{
+      --bg:#282a36; --card-bg:#343746; --header-bg:#282a36cc; --border:#44475a;
+      --text:#f8f8f2; --accent:#ff79c6; --keyword:#ff79c6; --string:#f1fa8c;
+      --function:#50fa7b; --number:#bd93f9; --comment:#6272a4; --tag:#ff79c6; --operator:#ff79c6;
+    }
+    :root[data-theme="monokai"]{
+      --bg:#272822; --card-bg:#32332a; --header-bg:#272822cc; --border:#3e3d32;
+      --text:#f8f8f2; --accent:#a6e22e; --keyword:#f92672; --string:#e6db74;
+      --function:#a6e22e; --number:#ae81ff; --comment:#75715e; --tag:#f92672; --operator:#f92672;
+    }
+    :root[data-theme="nord"]{
+      --bg:#2e3440; --card-bg:#3b4252; --header-bg:#2e3440cc; --border:#434c5e;
+      --text:#d8dee9; --accent:#88c0d0; --keyword:#81a1c1; --string:#a3be8c;
+      --function:#88c0d0; --number:#b48ead; --comment:#4c566a; --tag:#81a1c1; --operator:#81a1c1;
+    }
+    :root[data-theme="solarized-light"]{
+      --bg:#fdf6e3; --card-bg:#f7f3e9; --header-bg:#fdf6e3cc; --border:#e0d9c6;
+      --text:#657b83; --accent:#268bd2; --keyword:#859900; --string:#2aa198;
+      --function:#268bd2; --number:#b58900; --comment:#93a1a1; --tag:#dc322f; --operator:#268bd2;
+    }
+    :root[data-theme="github-light"]{
+      --bg:#ffffff; --card-bg:#f6f8fa; --header-bg:#ffffffcc; --border:#e1e4e8;
+      --text:#24292e; --accent:#0366d6; --keyword:#d73a49; --string:#22863a;
+      --function:#0366d6; --number:#6f42c1; --comment:#6a737d; --tag:#d73a49; --operator:#0366d6;
+    }
+    :root[data-theme="paper-light"]{
+      --bg:#fbfbf9; --card-bg:#fffdf8; --header-bg:#fbfbf9cc; --border:#efe9df;
+      --text:#2b2b2b; --accent:#ff6b6b; --keyword:#c678dd; --string:#98c379;
+      --function:#61afef; --number:#d19a66; --comment:#7f8c6b; --tag:#e06c75; --operator:#61afef;
+    }
+
+    /* =================================================
+       GLOBAL LAYOUT + STYLING
+       ================================================= */
+    html,body{height:100%}
+    body{
+      margin:0; font-family:'Segoe UI', Roboto, Arial, sans-serif;
+      background:var(--bg); color:var(--text);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      transition: background-color .25s, color .25s;
+    }
+
+    header{
+      position:sticky; top:0; z-index:999;
+      background:var(--header-bg); backdrop-filter: blur(6px);
+      border-bottom:1px solid var(--border); padding:10px 14px;
+      display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    }
+    .header-title{ font-weight:800; color:var(--accent); letter-spacing:1px; text-transform:uppercase; }
+
+    .controls{ display:flex; gap:12px; align-items:center; }
+    select{
+      background:var(--card-bg); color:var(--text); border:1px solid var(--border);
+      padding:6px 10px; border-radius:6px; cursor:pointer;
+    }
+
+    .switch{ position:relative; width:40px; height:22px; display:inline-block; }
+    .switch input{ opacity:0; width:0; height:0; }
+    .slider{ position:absolute; top:0; left:0; right:0; bottom:0; background:#555; border-radius:22px; transition:.25s; }
+    .slider:before{ content:""; position:absolute; height:16px; width:16px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.25s; }
+    input:checked + .slider{ background:var(--accent); } input:checked + .slider:before{ transform:translateX(18px); }
+
+    .container{ max-width:900px; margin:12px auto 80px; padding:12px; }
+
+    .card{ background:var(--card-bg); border:1px solid var(--border); border-radius:8px; margin-bottom:20px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,0.28); }
+    .card-header{ padding:12px 14px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); }
+    .card-title{ color:var(--accent); font-weight:700; }
+    .copy-btn{ background:transparent; border:1px solid var(--border); color:var(--text); padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:700; }
+    .copy-btn:hover{ border-color:var(--accent); color:var(--accent); }
+
+    .code-box{ height:60vh; max-height:75vh; overflow:auto; background:transparent; }
+    pre{
+      margin:0 !important; padding:16px !important; font-family:'JetBrains Mono','Fira Code',monospace;
+      font-size:13px; line-height:1.6; white-space:pre; background:transparent !important; color:var(--text) !important;
+    }
+
+    /* HIGHER-SPECIFICITY WRAP OVERRIDE (applies when <html> has class wrap-enabled) */
+    html.wrap-enabled pre[class*="language-"],
+    html.wrap-enabled code[class*="language-"] {
+      white-space: pre-wrap !important;
+      word-break: break-word !important;
+      overflow-wrap: anywhere !important;
+    }
+
+    /* Prism token color overrides */
+    code[class*="language-"], pre[class*="language-"]{ color:var(--text) !important; }
+    pre[class*="language-"] .token.comment{ color:var(--comment) !important; font-style:italic !important; }
+    pre[class*="language-"] .token.punctuation{ color:var(--text) !important; opacity:0.75; }
+    pre[class*="language-"] .token.tag{ color:var(--tag) !important; }
+    pre[class*="language-"] .token.attr-name{ color:var(--accent) !important; }
+    pre[class*="language-"] .token.string, pre[class*="language-"] .token.attr-value{ color:var(--string) !important; }
+    pre[class*="language-"] .token.keyword{ color:var(--keyword) !important; }
+    pre[class*="language-"] .token.function{ color:var(--function) !important; }
+    pre[class*="language-"] .token.boolean, pre[class*="language-"] .token.number{ color:var(--number) !important; }
+    pre[class*="language-"] .token.operator{ color:var(--operator) !important; }
+
+    @media (max-width:640px){
+      .code-box{ height:70vh; max-height:85vh; }
+      pre{ font-size:12px !important; padding:12px !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-title">Lab Programs</div>
+
+    <div class="controls">
+      <select id="themeSelect" aria-label="Select theme">
+        <option value="tokyo-night">Tokyo Night</option>
+        <option value="tokyo-night-deep">Tokyo Night (Deep)</option>
+        <option value="tokyo-night-berry">Tokyo Night (Berry)</option>
+
+        <option value="dracula">Dracula</option>
+        <option value="monokai">Monokai</option>
+        <option value="nord">Nord</option>
+
+        <option value="solarized-light">Solarized Light</option>
+        <option value="github-light">GitHub Light</option>
+        <option value="paper-light">Paper Light</option>
+      </select>
+
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-weight:600">Wrap</span>
+        <label class="switch" title="Toggle wrap">
+          <input id="wrapToggle" type="checkbox" aria-label="Wrap code" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="mainContainer">
+
+    <!-- 1. Form Validation -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">1. Form Validation</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Simple Form Validation&lt;/title&gt;
+    &lt;script&gt;
+        function validateForm() {
+            var name = myform.name.value;
+            var email = myform.email.value;
+            var mobile = myform.mobile.value;
+
+            var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            var mobilePattern = /^[0-9]{10}$/;
+
+            if (name === "") {
+                alert("Please enter your name");
+                return false;
+            }
+
+            if (email === "" || !emailPattern.test(email)) {
+                alert("Please enter a valid email");
+                return false;
+            }
+
+            if (mobile === "" || !mobilePattern.test(mobile)) {
+                alert("Mobile number should be 10 digits");
+                return false;
+            }
+
+            return true;
+        }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form name="myform" onsubmit="return validateForm()" method="post"&gt;
+        &lt;h2&gt;Student Information Form&lt;/h2&gt;
+        Name: &lt;input type="text" name="name"&gt;&lt;br&gt;&lt;br&gt;
+        Email: &lt;input type="text" name="email"&gt;&lt;br&gt;&lt;br&gt;
+        Mobile: &lt;input type="text" name="mobile"&gt;&lt;br&gt;&lt;br&gt;
+        Gender:&lt;br&gt;
+        &lt;input type="radio" name="gender" value="male"&gt; Male
+        &lt;input type="radio" name="gender" value="female"&gt; Female&lt;br&gt;&lt;br&gt;
+        Hobbies:&lt;br&gt;
+        &lt;input type="checkbox" name="hobby" value="reading"&gt; Reading&lt;br&gt;
+        &lt;input type="checkbox" name="hobby" value="travel"&gt; Travelling&lt;br&gt;&lt;br&gt;
+        &lt;input type="submit" value="Submit"&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+    </section>
+
+    <!-- 2. Math Calculator -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">2. Math Calculator</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Mathematical Evaluation Simple&lt;/title&gt;
+    &lt;script type="text/javascript"&gt;
+        function calc() {
+            var expression = myform.exp.value;
+            var resultField = myform.result;
+            try {
+                var answer = eval(expression);
+                resultField.value = answer;
+            } catch (e) {
+                resultField.value = "Error: Invalid Expression";
+            }
+        }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form name="myform" onsubmit="return false"&gt;
+        Enter an expression: &lt;input type="text" name="exp"&gt;&lt;br&gt;
+        &lt;input type="button" value="Calculate" onclick="calc()"&gt;&lt;br&gt;
+        Result: &lt;input type="text" name="result" disabled&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+    </section>
+
+    <!-- 3. Animation -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">3. Animation</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Dynamic Page With Animation&lt;/title&gt;
+    &lt;style&gt;
+        .layer {
+            width: 200px;
+            height: 100px;
+            background-color: skyblue;
+            position: absolute;
+            text-align: center;
+            line-height: 100px;
+            border-radius: 10px;
+            top: 100px;
+            left: 0; 
+        }
+    &lt;/style&gt;
+    &lt;script&gt;
+        document.addEventListener('DOMContentLoaded', () =&gt; {
+            const movingLayer = document.getElementById('movingLayer');
+            let position = 0;
+            let direction = 1;
+
+            setInterval(() =&gt; {
+                if (position &gt; (window.innerWidth - 200)) { 
+                    direction = -1;
+                }
+                if (position &lt; 0) {
+                    direction = 1;
+                }
+
+                position += 5 * direction;
+                movingLayer.style.left = position + 'px';
+            }, 50);
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="movingLayer" class="layer"&gt;Web Programing&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+    </section>
+
+    <!-- 4. Sum of N -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">4. Sum of N</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Sum of N Natural Numbers&lt;/title&gt;
+    &lt;script&gt;
+        function calculateSum() {
+            let n = document.getElementById("numberInput").value;
+            n = parseInt(n);
+
+            if (isNaN(n) || n &lt;= 0) {
+                alert("Please enter a valid positive number.");
+                return;
+            }
+
+            let sum = 0;
+            for (let i = 1; i &lt;= n; i++) {
+                sum += i;
+            }
+
+            alert(
+                "Sum of first " + n + " natural numbers is: " + sum)
+        }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Sum of N Natural Numbers&lt;/h2&gt;
+    &lt;label&gt;Enter a number (N): &lt;/label&gt;
+    &lt;input type="text" id="numberInput" /&gt;
+    &lt;button onclick="calculateSum()"&gt;Calculate Sum&lt;/button&gt;
+    &lt;p id="result"&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+    </section>
+
+    <!-- 5. Date Program -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">5. Date Program</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Date program&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Today's Date is:&lt;/h1&gt;
+    &lt;p id="p"&gt;&lt;/p&gt;
+    &lt;script&gt;
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const d = new Date();
+        
+        const day = days[d.getDay()];
+        const mon = month[d.getMonth()];
+        const date = d.getDate();
+        const year = d.getFullYear();
+
+        const formattedDate = day + ", " + mon + " " + date + ", " + year;
+        
+        document.getElementById('p').innerHTML = formattedDate;
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+    </section>
+
+    <!-- 6. Student Info -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">6. Student Info</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Student Information&lt;/title&gt;
+    &lt;script&gt;
+        function Calc() {
+            var M1 = parseInt(f1.M1.value);
+            var M2 = parseInt(f1.M2.value);
+            var M3 = parseInt(f1.M3.value);
+            
+            var total = M1 + M2 + M3;
+            var avg = total / 3;
+            var result;
+            var Grade;
+
+            if (avg &lt; 40) {
+                result = "Fail";
+            } else {
+                result = "Pass";
+            }
+
+            if (avg &gt;= 80) {
+                Grade = "A";
+            } else if (avg &gt;= 60) {
+                Grade = "B";
+            } else if (avg &gt;= 40) {
+                Grade = "C";
+            } else {
+                Grade = "Fail";
+            }
+
+            document.getElementById('tot').innerHTML = 
+                "TOTAL = " + total + "&lt;br&gt;" +
+                "AVERAGE = " + avg.toFixed(2) + "&lt;br&gt;" +
+                "RESULT = " + result + "&lt;br&gt;" +
+                "GRADE = " + Grade;
+        }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form name="f1"&gt;
+        &lt;h1&gt;STUDENT INFORMATION&lt;/h1&gt;
+        NAME: &lt;input type="text" id="name"&gt;&lt;br&gt;
+        Marks1:&lt;input type="number" name="M1"&gt;&lt;br&gt;
+        Marks2:&lt;input type="number" name="M2"&gt;&lt;br&gt;
+        Marks3:&lt;input type="number" name="M3"&gt;&lt;br&gt;
+        &lt;input type="button" value="CALCULATE" onClick="Calc()"&gt;
+        &lt;p id="tot"&gt;&lt;/p&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+    </section>
+
+    <!-- 7. Employee Pay -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">7. Employee Pay</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Employee Pay Calculation&lt;/title&gt;
+    &lt;script&gt;
+        function e() {
+            var Basicpay = parseInt(f1.t1.value);
+            
+            var DA = (20 / 100) * Basicpay;
+            var HRA = (12 / 100) * Basicpay;
+            var Grosspay = Basicpay + DA + HRA;
+            var PF = (12 / 100) * Basicpay;
+            var TAX = (10 / 100) * Grosspay;
+            var Deduction = PF + TAX;
+            var NETPAY = Grosspay - Deduction;
+            
+            var output = 
+                "BASICPAY = " + Basicpay.toFixed(2) + "&lt;br&gt;" +
+                "DA (20%) = " + DA.toFixed(2) + "&lt;br&gt;" +
+                "HRA (12%) = " + HRA.toFixed(2) + "&lt;br&gt;" +
+                "GROSS PAY = " + Grosspay.toFixed(2) + "&lt;br&gt;" +
+                "PF (12%) = " + PF.toFixed(2) + "&lt;br&gt;" +
+                "TAX (10%) = " + TAX.toFixed(2) + "&lt;br&gt;" +
+                "NET PAY = " + NETPAY.toFixed(2);
+            
+            document.getElementById('results').innerHTML = output;
+        }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form name="f1"&gt;
+        &lt;h1&gt;THIS EMPLOYEE INFORMATION FORM&lt;/h1&gt;&lt;br&gt;
+        Enter BASIC PAY: &lt;input type="number" name="t1"&gt;&lt;br&gt;&lt;br&gt;
+        
+        &lt;input type="button" value="CALCULATE PAY" onclick="e()"&gt;&lt;br&gt;
+        
+        &lt;hr&gt;
+        
+        &lt;h2&gt;Calculation Results:&lt;/h2&gt;
+        &lt;p id="results"&gt;&lt;/p&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+    </section>
+
+    <!-- 8. Day Background -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">8. Day Background</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-php">&lt;?php
+$dayColors = array(
+    "Monday" =&gt; "lightblue",
+    "Tuesday" =&gt; "lightgreen",
+    "Wednesday" =&gt; "lightyellow",
+    "Thursday" =&gt; "orange",
+    "Friday" =&gt; "lightpink",
+    "Saturday" =&gt; "lightgray",
+    "Sunday" =&gt; "lightcoral"
+);
+
+$day = date("l");
+$bgColor = "white";
+
+if (isset($dayColors[$day])) {
+    $bgColor = $dayColors[$day];
+}
+?&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Background Color Based on Day&lt;/title&gt;
+&lt;/head&gt;
+&lt;body style="background-color: &lt;?php echo $bgColor; ?&gt;;"&gt;
+    &lt;h2&gt;Today is &lt;?php echo $day; ?&gt;&lt;/h2&gt;
+    &lt;p&gt;The background color changes based on the day of the week.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+    </section>
+
+    <!-- 9. Prime & Fibo -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">9. Prime & Fibo</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-php">&lt;?php
+function generatePrimes($maxNumber) {
+    echo "Prime numbers up to " . $maxNumber . ": ";
+    $primes = array();
+    
+    for ($number = 2; $number &lt;= $maxNumber; $number++) {
+        $isPrime = true;
+
+        for ($i = 2; $i * $i &lt;= $number; $i++) {
+            if (($number % $i) == 0) {
+                $isPrime = false;
+                break;
+            }
+        }
+        
+        if ($isPrime) {
+            $primes[] = $number;
+        }
+    }
+    
+    echo implode(' ', $primes);
+    echo "&lt;br&gt;";
+}
+
+function FibonacciSeries($numTerms) {
+    echo "Fibonacci Series (" . $numTerms . " terms): ";
+    
+    $first = 0;
+    $second = 1;
+    
+    if ($numTerms &gt;= 1) {
+        echo $first . " ";
+    }
+    if ($numTerms &gt;= 2) {
+        echo $second . " ";
+    }
+    
+    for ($i = 3; $i &lt;= $numTerms; $i++) {
+        $next = $first + $second;
+        echo $next . " ";
+        
+        $first = $second;
+        $second = $next;
+    }
+    echo "&lt;br&gt;";
+}
+
+generatePrimes(50);
+FibonacciSeries(10);
+?&gt;</code></pre></div>
+    </section>
+
+    <!-- 10. Remove Duplicates -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">10. Remove Duplicates</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-php">&lt;?php
+function removeDuplicates(array $array) {
+    $result = array_values(array_unique($array));
+    return $result;
+}
+
+$sortedList = [1, 2, 2, 3, 3, 3, 4, 4, 5];
+
+$uniqueList = removeDuplicates($sortedList);
+
+echo "Original List: ";
+print_r($sortedList);
+echo "&lt;br&gt;";
+
+echo "Unique List: ";
+print_r($uniqueList);
+echo "&lt;br&gt;";
+?&gt;</code></pre></div>
+    </section>
+
+    <!-- 11. Pattern -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">11. Pattern</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-php">&lt;?php
+$rows = 5;
+
+for ($i = $rows; $i &gt;= 1; $i--) {
+    
+    for ($j = $rows; $j &gt; $i; $j--) {
+        echo "&nbsp;";
+    }
+    
+    for ($k = 0; $k &lt; $i; $k++) {
+        echo "* ";
+    }
+    
+    echo "&lt;br&gt;";
+}
+?&gt;</code></pre></div>
+    </section>
+
+    <!-- 12. Search Criteria -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">12. Search Criteria</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-php">&lt;?php
+$data = [
+    [ 'id' =&gt; 1, 'name' =&gt; 'Srikantn', 'age' =&gt; 30 ],
+    [ 'id' =&gt; 2, 'name' =&gt; 'Vikrant', 'age' =&gt; 28 ],
+    [ 'id' =&gt; 3, 'name' =&gt; 'Srinivas', 'age' =&gt; 50 ],
+    [ 'id' =&gt; 4, 'name' =&gt; 'Sanjay', 'age' =&gt; 45 ],
+    [ 'id' =&gt; 5, 'name' =&gt; 'Saathvik', 'age' =&gt; 18 ]
+];
+
+function searchByCriteria(array $data, $criteria) {
+    $results = [];
+
+    foreach ($data as $entry) {
+        $match = true;
+
+        foreach ($criteria as $key =&gt; $value) {
+            if (isset($entry[$key])) {
+                if ($key === 'age' && strpos($value, '&gt;=') === 0) {
+                    $minAge = (int)substr($value, 2);
+                    if ($entry['age'] &lt; $minAge) {
+                        $match = false;
+                        break;
+                    }
+                } elseif ($entry[$key] != $value) {
+                    $match = false;
+                    break;
+                }
+            } else {
+                $match = false;
+                break;
+            }
+        }
+
+        if ($match) {
+            $results[] = $entry;
+        }
+    }
+    return $results;
+}
+
+$criteria1 = ['age' =&gt; '&gt;= 50'];
+$results1 = searchByCriteria($data, $criteria1);
+
+$criteria2 = ['name' =&gt; 'Sanjay'];
+$results2 = searchByCriteria($data, $criteria2);
+
+echo "Results 1 (Age &gt;= 50): ";
+print_r($results1);
+echo "&lt;br&gt;";
+
+echo "Results 2 (Name = Sanjay): ";
+print_r($results2);
+?&gt;</code></pre></div>
+    </section>
+
+    <!-- 13. Captcha -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">13. Captcha</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-php">&lt;?php
+function generateCaptchaCode($length) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $characterStringLength = strlen($characters);
+    $randomString = '';
+
+    for ($i = 0; $i &lt; $length; $i++) {
+        $randomString .= $characters[rand(0, $characterStringLength - 1)];
+    }
+
+    return $randomString;
+}
+
+echo "Captcha Code is " . generateCaptchaCode(6);
+?&gt;</code></pre></div>
+    </section>
+
+    <!-- 14. Image Upload -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">14. Image Upload</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-php">&lt;?php
+$conn = new mysqli("localhost", "root", "mydb");
+if ($conn-&gt;connect_error) {
+    die("Connection failed: " . $conn-&gt;connect_error);
+}
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $stmt = $conn-&gt;prepare("SELECT image_type, image_data FROM images WHERE id = ?");
+    $stmt-&gt;bind_param("i", $id);
+    $stmt-&gt;execute();
+    $stmt-&gt;bind_result($imageType, $imageData);
+    $stmt-&gt;fetch();
+    
+    header("Content-Type: " . $imageType);
+    echo $imageData;
+    exit;
+}
+
+function displayImages($conn) {
+    $sql = "SELECT id, image_name FROM images";
+    $result = $conn-&gt;query($sql);
+    
+    while ($row = $result-&gt;fetch_assoc()) {
+        echo '&lt;img src="?id=' . $row['id'] . '" alt="' . $row['image_name'] . '" width="100"&gt;';
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_FILES["image"])) {
+    $imageName = $_FILES['image']['name'];
+    $imageType = $_FILES['image']['type'];
+    $imageTmpName = $_FILES['image']['tmp_name'];
+    $imageData = file_get_contents($imageTmpName);
+
+    $stmt = $conn-&gt;prepare("INSERT INTO images (image_name, image_type, image_data) VALUES (?, ?, ?)");
+    $stmt-&gt;bind_param("ssb", $imageName, $imageType, $imageData);
+    $stmt-&gt;send_long_data(2, $imageData);
+    $stmt-&gt;execute();
+}
+?&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Image Upload and Display&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Upload and Display Images&lt;/h1&gt;
+    &lt;form action="" method="post" enctype="multipart/form-data"&gt;
+        Select image to upload:
+        &lt;input type="file" name="image" id="image"&gt;
+        &lt;input type="submit" value="Upload Image" name="submit"&gt;
+    &lt;/form&gt;
+
+    &lt;h2&gt;Uploaded Images:&lt;/h2&gt;
+    &lt;?php displayImages($conn); ?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+&lt;?php $conn-&gt;close(); ?&gt;</code></pre></div>
+    </section>
+
+    <!-- 15. File Read/Write -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">15. File Read/Write</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box"><pre><code class="language-php">&lt;?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    if (isset($_POST['text']) && !empty($_POST['text'])) {
+        $text_data = $_POST['text'];
+        $file_path = 'output.txt';
+        
+        if (file_put_contents($file_path, $text_data) !== false) {
+            $write_message = "Data written to " . $file_path . ": " . htmlspecialchars($text_data);
+        } else {
+            $write_message = "Error writing file.";
+        }
+    }
+    
+    if (isset($_FILES['file_to_read']) && $_FILES['file_to_read']['error'] === UPLOAD_ERR_OK) {
+        $tmp_name = $_FILES['file_to_read']['tmp_name'];
+        
+        if (file_exists($tmp_name)) {
+            $contents = file_get_contents($tmp_name);
+            $read_output = nl2br(htmlspecialchars($contents));
+        } else {
+            $read_output = "Error: Uploaded file not found.";
+        }
+    }
+}
+
+$write_message = $write_message ?? "Enter text and click 'Write to File'.";
+$read_output = $read_output ?? "Choose file to upload and read contents.";
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;File Read/Write&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form action="" method="post"&gt;
+        &lt;h2&gt;Write to File&lt;/h2&gt;
+        &lt;label for="text-input"&gt;Enter text:&lt;/label&gt;&lt;br&gt;
+        &lt;textarea name="text" id="text-input"&gt;&lt;/textarea&gt;&lt;br&gt;
+        &lt;input type="submit" value="Write to File"&gt;
+        &lt;p&gt;&lt;?php echo $write_message; ?&gt;&lt;/p&gt;
+    &lt;/form&gt;
+    
+    &lt;hr&gt;
+    
+    &lt;form action="" method="post" enctype="multipart/form-data"&gt;
+        &lt;h2&gt;Read File Contents&lt;/h2&gt;
+        &lt;label for="file_input"&gt;Upload File to Read Contents:&lt;/label&gt;
+        &lt;input type="file" name="file_to_read" id="file_input"&gt;
+        &lt;input type="submit" value="Read File Contents"&gt;
+        
+        &lt;h3&gt;File Output:&lt;/h3&gt;
+        &lt;p&gt;&lt;?php echo $read_output; ?&gt;&lt;/p&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+    </section>
+
+  </main>
+
+  <script>
+    // Theme switch
+    document.getElementById('themeSelect').addEventListener('change', function() {
+      document.documentElement.setAttribute('data-theme', this.value);
+    });
+
+    // Wrap toggle: applies class on <html> element
+    const wrapToggle = document.getElementById('wrapToggle');
+    wrapToggle.addEventListener('change', () => {
+      document.documentElement.classList.toggle('wrap-enabled', wrapToggle.checked);
+      // Force reflow so browsers apply the CSS override immediately
+      void document.documentElement.offsetHeight;
+      // Re-run Prism highlighting (safe)
+      if (window.Prism && typeof Prism.highlightAll === 'function') {
+        try { Prism.highlightAll(); } catch (e) { /* ignore */ }
+      }
+    });
+
+    // Robust copy implementation (Clipboard API -> execCommand -> prompt)
+    async function copyCode(btn) {
+      try {
+        const codeEl = btn.closest('.card').querySelector('code');
+        if (!codeEl) return;
+        const text = codeEl.innerText || codeEl.textContent || '';
+        const original = btn.innerText;
+
+        const showTemp = (label) => {
+          btn.innerText = label;
+          btn.disabled = true;
+          setTimeout(() => {
+            btn.innerText = original;
+            btn.disabled = false;
+          }, 1200);
+        };
+
+        // Try Clipboard API
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+            showTemp('Copied!');
+            return;
+          }
+        } catch (err) { console.warn('Clipboard API failed', err); }
+
+        // Fallback: textarea + execCommand
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly','');
+          ta.style.position = 'absolute';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+
+          const selection = document.getSelection();
+          const ranges = [];
+          if (selection && selection.rangeCount) {
+            for (let i = 0; i < selection.rangeCount; i++) {
+              ranges.push(selection.getRangeAt(i));
+            }
+          }
+
+          ta.select();
+          ta.setSelectionRange(0, ta.value.length);
+
+          const ok = document.execCommand && document.execCommand('copy');
+
+          if (selection) {
+            selection.removeAllRanges();
+            for (const r of ranges) selection.addRange(r);
+          }
+          document.body.removeChild(ta);
+
+          if (ok) { showTemp('Copied!'); return; }
+        } catch (err) { console.warn('execCommand fallback failed', err); }
+
+        // Last resort
+        showTemp('Copy failed');
+        window.prompt('Copy the text below (Ctrl/Cmd+C):', text);
+      } catch (err) {
+        console.error('copyCode error', err);
+      }
+    }
+
+    // Ensure Prism highlights after deferred scripts load
+    window.addEventListener('load', function() {
+      if (window.Prism && typeof Prism.highlightAll === 'function') {
+        try { Prism.highlightAll(); } catch (err) { console.warn('Prism.highlightAll failed:', err); }
+      }
+    });
+  </script>
+</body>
+</html>
