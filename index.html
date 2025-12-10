@@ -1135,143 +1135,95 @@ $read_output = $read_output ?? "Choose file to upload and read contents.";
       </div>
     </section>
 
-    <!-- 16. Student CRUD -->
+    <!-- 16. Student Database CRUD -->
     <section class="card">
       <div class="card-header">
-        <div class="card-title">16. Student CRUD</div>
+        <div class="card-title">16. Student Database CRUD</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
       <div class="code-box">
         <pre><code class="language-php">&lt;?php
-$host = "localhost";
-$user = "root";
-$password = "";
-$db = "school";
+$conn = new mysqli("localhost", "root", "", "myDB"); // establish connection
+if ($conn-&gt;connect_error) {
+    die("Connection failed: " . $conn-&gt;connect_error);
+}
 
-$conn = mysqli_connect($host, $user, $password, $db);
-if (!$conn) { die("Connection failed: " . mysqli_connect_error()); }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-$id = $name = $email = $phone = $father = $mother = "";
-$error = "";
+    $regno = $_POST['regno'];
+    $name = $_POST['name'];
+    $age = $_POST['age'];
+    $course = $_POST['course'];
 
-// Add or Update
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST['id'] ?? '';
-    $name = trim($_POST['name']);
-    $email = trim($_POST['email']);
-    $phone = trim($_POST['phone']);
-    $father = trim($_POST['father_name']);
-    $mother = trim($_POST['mother_name']);
+    switch ($_POST['action']) {
 
-    if (empty($name)) {
-        $error = "Name is required!";
+        case "Add":
+            $sql = "INSERT INTO student VALUES ($regno, '$name', $age, '$course')";
+            break;
+
+        case "Update":
+            $sql = "UPDATE student SET name='$name', age=$age, course='$course' WHERE regno=$regno";
+            break;
+
+        case "Delete":
+            $sql = "DELETE FROM student WHERE regno=$regno";
+            break;
+    }
+
+    if ($conn-&gt;query($sql) === FALSE) {
+        echo "Error: " . $sql . "&lt;br&gt;" . $conn-&gt;error;
+    }
+}
+
+// Function to display records
+function displayStudents($conn) {
+    $sql = "SELECT * FROM student";
+    $result = $conn-&gt;query($sql);
+
+    if ($result-&gt;num_rows &gt; 0) {
+
+        echo "&lt;table border='1'&gt;
+        &lt;tr&gt;&lt;th&gt;Reg No&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;th&gt;Course&lt;/th&gt;&lt;/tr&gt;";
+
+        while ($row = $result-&gt;fetch_assoc()) {
+            echo "&lt;tr&gt;
+            &lt;td&gt;" . $row['regno'] . "&lt;/td&gt;
+            &lt;td&gt;" . $row['name'] . "&lt;/td&gt;
+            &lt;td&gt;" . $row['age'] . "&lt;/td&gt;
+            &lt;td&gt;" . $row['course'] . "&lt;/td&gt;
+            &lt;/tr&gt;";
+        }
+        echo "&lt;/table&gt;";
     } else {
-        $name = mysqli_real_escape_string($conn, $name);
-        $email = mysqli_real_escape_string($conn, $email);
-        $phone = mysqli_real_escape_string($conn, $phone);
-        $father = mysqli_real_escape_string($conn, $father);
-        $mother = mysqli_real_escape_string($conn, $mother);
-
-        if ($id) {
-            $id = (int)$id;
-            $query = "UPDATE students SET name='$name', email='$email', phone='$phone',
-                      father_name='$father', mother_name='$mother' WHERE id=$id";
-        } else {
-            $query = "INSERT INTO students (name, email, phone, father_name, mother_name)
-                      VALUES ('$name', '$email', '$phone', '$father', '$mother')";
-        }
-
-        if (mysqli_query($conn, $query)) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
-        } else {
-            $error = "Database error: " . mysqli_error($conn);
-        }
+        echo "0 results";
     }
 }
-
-// Delete
-if (isset($_GET['delete'])) {
-    $delete_id = (int)$_GET['delete'];
-    mysqli_query($conn, "DELETE FROM students WHERE id=$delete_id");
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit();
-}
-
-// Edit
-$edit = null;
-if (isset($_GET['edit'])) {
-    $edit_id = (int)$_GET['edit'];
-    $result = mysqli_query($conn, "SELECT * FROM students WHERE id=$edit_id");
-    $edit = mysqli_fetch_assoc($result);
-    if ($edit) {
-        $id = $edit['id'];
-        $name = $edit['name'];
-        $email = $edit['email'];
-        $phone = $edit['phone'];
-        $father = $edit['father_name'];
-        $mother = $edit['mother_name'];
-    }
-}
-
-$result = mysqli_query($conn, "SELECT * FROM students");
 ?&gt;
+
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;Student CRUD&lt;/title&gt;
-&lt;style&gt;
-form { margin-bottom: 30px; }
-label { display: block; margin-top: 8px; }
-input[type="text"], input[type="email"] { width: 300px; padding: 5px; }
-.error { color: red; margin-bottom: 15px; }
-table { border-collapse: collapse; width: 80%; margin-top: 20px; }
-table, th, td { border: 1px solid #ccc; }
-th, td { padding: 8px; text-align: left; }
-&lt;/style&gt;
+&lt;title&gt;Student Database Management&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
 
-&lt;h2&gt;Add / Edit Student&lt;/h2&gt;
-&lt;?php if ($error): ?&gt;
-&lt;div class="error"&gt;&lt;?= htmlspecialchars($error) ?&gt;&lt;/div&gt;
-&lt;?php endif; ?&gt;
+&lt;h3&gt;Manage Students&lt;/h3&gt;
 
-&lt;form method="post" action=""&gt;
-&lt;input type="hidden" name="id" value="&lt;?= htmlspecialchars($id) ?&gt;"&gt;
-&lt;label&gt;Name:&lt;/label&gt;
-&lt;input type="text" name="name" value="&lt;?= htmlspecialchars($name) ?&gt;"&gt;
-&lt;label&gt;Email:&lt;/label&gt;
-&lt;input type="email" name="email" value="&lt;?= htmlspecialchars($email) ?&gt;"&gt;
-&lt;label&gt;Phone:&lt;/label&gt;
-&lt;input type="text" name="phone" value="&lt;?= htmlspecialchars($phone) ?&gt;"&gt;
-&lt;label&gt;Father Name:&lt;/label&gt;
-&lt;input type="text" name="father_name" value="&lt;?= htmlspecialchars($father) ?&gt;"&gt;
-&lt;label&gt;Mother Name:&lt;/label&gt;
-&lt;input type="text" name="mother_name" value="&lt;?= htmlspecialchars($mother) ?&gt;"&gt;
-&lt;br&gt;&lt;br&gt;
-&lt;button type="submit"&gt;&lt;?= $id ? 'Update' : 'Add' ?&gt;&lt;/button&gt;
+&lt;form method="post"&gt;
+Reg No : &lt;input type="text" name="regno" required&gt;&lt;br&gt;&lt;br&gt;
+Name : &lt;input type="text" name="name"&gt;&lt;br&gt;&lt;br&gt;
+Age : &lt;input type="number" name="age"&gt;&lt;br&gt;&lt;br&gt;
+Course : &lt;input type="text" name="course"&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;input type="submit" name="action" value="Add"&gt;
+&lt;input type="submit" name="action" value="Update"&gt;
+&lt;input type="submit" name="action" value="Delete"&gt;
 &lt;/form&gt;
 
-&lt;h2&gt;Students List&lt;/h2&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Email&lt;/th&gt;&lt;th&gt;Phone&lt;/th&gt;&lt;th&gt;Father&lt;/th&gt;&lt;th&gt;Mother&lt;/th&gt;&lt;th&gt;Action&lt;/th&gt;
-&lt;/tr&gt;
-&lt;?php while ($row = mysqli_fetch_assoc($result)): ?&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;?= htmlspecialchars($row['name']) ?&gt;&lt;/td&gt;
-&lt;td&gt;&lt;?= htmlspecialchars($row['email']) ?&gt;&lt;/td&gt;
-&lt;td&gt;&lt;?= htmlspecialchars($row['phone']) ?&gt;&lt;/td&gt;
-&lt;td&gt;&lt;?= htmlspecialchars($row['father_name']) ?&gt;&lt;/td&gt;
-&lt;td&gt;&lt;?= htmlspecialchars($row['mother_name']) ?&gt;&lt;/td&gt;
-&lt;td&gt;
-&lt;a href="?edit=&lt;?= (int)$row['id'] ?&gt;"&gt;Edit&lt;/a&gt; |
-&lt;a href="?delete=&lt;?= (int)$row['id'] ?&gt;" onclick="return confirm('Are you sure?')"&gt;Delete&lt;/a&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;?php endwhile; ?&gt;
-&lt;/table&gt;
+&lt;?php
+displayStudents($conn); // show records
+$conn-&gt;close();
+?&gt;
 
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -1292,109 +1244,75 @@ th, td { padding: 8px; text-align: left; }
 &lt;/head&gt;
 &lt;body&gt;
 
-&lt;?php
-$name = $email = $mobile = $age = "";
-$nameErr = $emailErr = $mobileErr = $ageErr = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    if (empty($_POST["name"])) { $nameErr = "Name is required"; }
-    else { $name = htmlspecialchars($_POST["name"]); }
-
-    if (empty($_POST["email"])) { $emailErr = "Email is required"; }
-    elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-        $emailErr = "Invalid email format";
-    } else { $email = htmlspecialchars($_POST["email"]); }
-
-    if (empty($_POST["mobile"])) { $mobileErr = "Mobile number is required"; }
-    elseif (!preg_match("/^[0-9]{10}$/", $_POST["mobile"])) {
-        $mobileErr = "Invalid mobile number";
-    } else { $mobile = htmlspecialchars($_POST["mobile"]); }
-
-    if (empty($_POST["age"])) { $ageErr = "Age is required"; }
-    elseif (!is_numeric($_POST["age"]) || $_POST["age"] &lt;= 0 || $_POST["age"] &gt; 120) {
-        $ageErr = "Invalid age";
-    } else { $age = htmlspecialchars($_POST["age"]); }
-}
-?&gt;
-
-&lt;h2&gt;PHP Form Validation Example&lt;/h2&gt;
-&lt;form method="post" action=""&gt;
-Name: &lt;input type="text" name="name" value="&lt;?php echo $name; ?&gt;"&gt;
-&lt;span style="color:red;"&gt;* &lt;?php echo $nameErr; ?&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;
-
-Email: &lt;input type="text" name="email" value="&lt;?php echo $email; ?&gt;"&gt;
-&lt;span style="color:red;"&gt;* &lt;?php echo $emailErr; ?&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;
-
-Mobile: &lt;input type="text" name="mobile" value="&lt;?php echo $mobile; ?&gt;"&gt;
-&lt;span style="color:red;"&gt;* &lt;?php echo $mobileErr; ?&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;
-
-Age: &lt;input type="text" name="age" value="&lt;?php echo $age; ?&gt;"&gt;
-&lt;span style="color:red;"&gt;* &lt;?php echo $ageErr; ?&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;
-
+&lt;form method="post"&gt;
+Name: &lt;input type="text" name="name"&gt;&lt;br&gt;&lt;br&gt;
+Email: &lt;input type="text" name="email"&gt;&lt;br&gt;&lt;br&gt;
 &lt;input type="submit" name="submit" value="Submit"&gt;
 &lt;/form&gt;
 
 &lt;?php
-if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; !$nameErr &amp;&amp; !$emailErr &amp;&amp; !$mobileErr &amp;&amp; !$ageErr) {
-    echo "&lt;h3&gt;Submitted Data:&lt;/h3&gt;";
-    echo "Name: $name&lt;br&gt;";
-    echo "Email: $email&lt;br&gt;";
-    echo "Mobile: $mobile&lt;br&gt;";
-    echo "Age: $age&lt;br&gt;";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+
+    if (empty($name)) {
+        echo "Name is required.&lt;br&gt;";
+    } else {
+        echo "Name : $name &lt;br&gt;";
+    }
+
+    if (empty($email)) {
+        echo "Email is required.&lt;br&gt;";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Invalid email format.&lt;br&gt;";
+    } else {
+        echo "Email : $email &lt;br&gt;";
+    }
 }
 ?&gt;
+
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>
     </section>
 
-    <!-- 18. Cookie Example -->
+    <!-- 18. Cookie Handler -->
     <section class="card">
       <div class="card-header">
-        <div class="card-title">18. Cookie Example</div>
+        <div class="card-title">18. Cookie Handler</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
       <div class="code-box">
-        <pre><code class="language-php">&lt;?php
-$username = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; !empty($_POST["username"])) {
-    $username = htmlspecialchars($_POST["username"]);
-    setcookie("username", $username, time() + (86400 * 30));
-    header("Location: " . $_SERVER["PHP_SELF"]);
-    exit();
-}
-
-if (isset($_COOKIE["username"])) {
-    $username = $_COOKIE["username"];
-}
-?&gt;
-&lt;!DOCTYPE html&gt;
+        <pre><code class="language-php">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;Cookie Example&lt;/title&gt;
-&lt;style&gt;
-body { font-family: Arial; text-align: center; }
-.message {
-    padding: 10px; font-weight: bold;
-    width: 300px; margin: 0 auto 20px;
-    border: 1px solid #ccc; background-color: #f2f2f2;
-}
-&lt;/style&gt;
+&lt;title&gt;Cookie Handler&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
 
 &lt;?php
-if (!empty($username))
-    echo "&lt;div class='message'&gt;Welcome back, $username!&lt;/div&gt;";
-else
-    echo "&lt;div class='message'&gt;Welcome, guest! Cookie not set.&lt;/div&gt;";
+// When form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    setcookie("username", $_POST['username'], time() + (10 * 30), "/");
+
+    echo "Cookie is set. Reload the page to see the cookie value.&lt;br&gt;";
+}
+
+// Check whether cookie exists
+if (isset($_COOKIE['username'])) {
+    echo "&lt;p&gt;Welcome back, " . htmlspecialchars($_COOKIE['username']) . "!&lt;/p&gt;";
+} else {
+    echo "&lt;p&gt;Welcome, guest!&lt;/p&gt;";
+}
 ?&gt;
 
-&lt;form method="post" action=""&gt;
-&lt;label&gt;Enter your name:&lt;/label&gt;&lt;br&gt;&lt;br&gt;
-&lt;input type="text" name="username" value="&lt;?php echo $username; ?&gt;" required&gt;&lt;br&gt;&lt;br&gt;
+&lt;!-- HTML form to set cookie --&gt;
+&lt;form method="post" action="&lt;?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?&gt;"&gt;
+&lt;label&gt;Enter your name:&lt;/label&gt;&lt;br&gt;
+&lt;input type="text" name="username"&gt;&lt;br&gt;&lt;br&gt;
 &lt;input type="submit" value="Set Cookie"&gt;
 &lt;/form&gt;
 
@@ -1403,65 +1321,102 @@ else
       </div>
     </section>
 
-    <!-- 19. BCA Academy -->
+    <!-- 19. College Website -->
     <section class="card">
       <div class="card-header">
-        <div class="card-title">19. BCA Academy</div>
+        <div class="card-title">19. College Website</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
       <div class="code-box">
-        <pre><code class="language-php">&lt;!DOCTYPE html&gt;
+        <pre><code class="language-php">&lt;!-- ========== index.php ========== --&gt;
+&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;BCA Academy&lt;/title&gt;
+&lt;title&gt;Skyward Institute of Computer Applications&lt;/title&gt;
+
 &lt;style&gt;
-body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f4f9; }
-header { background: #003366; color: white; padding: 30px 0; text-align: center; }
-nav { background: #0059b3; padding: 10px; text-align:center; }
-nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
-nav a:hover { text-decoration: underline; }
-
-.container { display:flex; justify-content:center; gap:30px; margin:40px auto; max-width:900px; }
-.card { background:white; padding:20px; border-radius:8px; box-shadow:0 0 10px #ccc; width:45%; }
-
-footer { background:#003366; color:white; text-align:center; padding:15px 0; margin-top:50px; }
+body {
+    font-family: Arial, sans-serif;
+}
+header {
+    background-color: #0099ff;
+    padding: 20px;
+    text-align: center;
+}
+nav {
+    margin: 20px 0;
+    text-align: center;
+}
+nav a {
+    margin: 15px;
+}
 &lt;/style&gt;
+
 &lt;/head&gt;
+
 &lt;body&gt;
 
 &lt;header&gt;
-&lt;h1&gt;BCA Academy&lt;/h1&gt;
-&lt;p&gt;Your Future Begins Here&lt;/p&gt;
+&lt;h1&gt;Skyward Institute of Computer Applications&lt;/h1&gt;
+&lt;p&gt;157, 3RD MAIN, CHAMRAJPET BANGALORE 560018&lt;/p&gt;
 &lt;/header&gt;
 
 &lt;nav&gt;
-&lt;a href="#pu"&gt;PU College&lt;/a&gt;
-&lt;a href="#degree"&gt;Degree College&lt;/a&gt;
+&lt;a href="index.php"&gt;Home&lt;/a&gt;
+&lt;a href="about.php"&gt;About Us&lt;/a&gt;
+&lt;a href="courses.php"&gt;Courses&lt;/a&gt;
+&lt;a href="contact.php"&gt;Contact Us&lt;/a&gt;
 &lt;/nav&gt;
 
-&lt;div class="container"&gt;
-&lt;div class="card" id="pu"&gt;
-&lt;h2&gt;PU College&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Science (PCMB, PCMC)&lt;/li&gt;
-&lt;li&gt;Commerce (CEBA, SEBA, HEBA)&lt;/li&gt;
-&lt;li&gt;Arts&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
+&lt;main&gt;
+&lt;h2&gt;Welcome to Skyward Institute of Computer Applications&lt;/h2&gt;
+&lt;p&gt;We provide best training on computer application courses.&lt;/p&gt;
+&lt;/main&gt;
 
-&lt;div class="card" id="degree"&gt;
-&lt;h2&gt;Degree College&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;BCA – Computer Applications&lt;/li&gt;
-&lt;li&gt;BCom – Commerce &amp; Finance&lt;/li&gt;
-&lt;li&gt;BA – Arts &amp; Humanities&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 
-&lt;footer&gt;
-&amp;copy; &lt;?php echo date("Y"); ?&gt; BCA Academy. All Rights Reserved.
-&lt;/footer&gt;
+&lt;!-- ========== about.php ========== --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;About Us - Skyward Institute&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;About Us&lt;/h1&gt;
+&lt;p&gt;Skyward Institute of Computer Applications was founded in 2010 with a mission to provide quality education.&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+&lt;!-- ========== courses.php ========== --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Courses - Skyward Institute&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;Courses&lt;/h1&gt;
+&lt;h2&gt;BCA&lt;/h2&gt;
+&lt;h2&gt;MCA&lt;/h2&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+&lt;!-- ========== contact.php ========== --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Contact Us - Skyward Institute&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;Contact Us&lt;/h1&gt;
+&lt;p&gt;Address: 157, 3RD MAIN, CHAMRAJPET, BANGALORE 560018&lt;/p&gt;
+&lt;p&gt;Phone: 9611189959&lt;/p&gt;
+&lt;p&gt;Email: skyward.publisher@gmail.com&lt;/p&gt;
 
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -1475,78 +1430,47 @@ footer { background:#003366; color:white; text-align:center; padding:15px 0; mar
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
       <div class="code-box">
-        <pre><code class="language-php">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;PHP Exception Handling&lt;/title&gt;
-&lt;style&gt;
-body { font-family: Arial; background:#f4f4f4; padding:30px; }
-.form-box, .result-box {
- background:#fff; padding:20px; border:1px solid #ccc;
- box-shadow:2px 2px 10px #aaa; max-width:500px; margin:auto;
+        <pre><code class="language-php">&lt;?php
+
+// Division Exception
+function divide($numerator, $denominator) {
+
+    if ($denominator == 0) {
+        throw new Exception("Cannot divide by zero.");
+    }
+    return $numerator / $denominator;
 }
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
 
-&lt;?php
-$num1 = $_POST['num1'] ?? '';
-$num2 = $_POST['num2'] ?? '';
-$date_input = $_POST['date_input'] ?? '';
-?&gt;
+// Date format check exception
+function checkDateFormat($date, $format = 'Y-m-d') {
 
-&lt;div class="form-box"&gt;
-&lt;h2&gt;Exception Handling Form&lt;/h2&gt;
-&lt;form method="post"&gt;
-&lt;label&gt;Enter numerator:&lt;/label&gt;
-&lt;input type="text" name="num1" value="&lt;?php echo $num1; ?&gt;" required&gt;
+    $dateTime = DateTime::createFromFormat($format, $date);
 
-&lt;label&gt;Enter denominator:&lt;/label&gt;
-&lt;input type="text" name="num2" value="&lt;?php echo $num2; ?&gt;" required&gt;
-
-&lt;label&gt;Enter date (YYYY-MM-DD):&lt;/label&gt;
-&lt;input type="text" name="date_input" value="&lt;?php echo $date_input; ?&gt;" required&gt;
-
-&lt;input type="submit" name="submit" value="Submit"&gt;
-&lt;/form&gt;
-&lt;/div&gt;
-
-&lt;?php
-if (isset($_POST['submit'])) {
-    echo '&lt;div class="result-box"&gt;';
-
-    // Division handling
-    try {
-        if (!is_numeric($num1) || !is_numeric($num2)) {
-            throw new Exception("Division error: Inputs must be numbers.");
-        }
-        if ($num2 == 0) {
-            throw new Exception("Division error: Cannot divide by zero.");
-        }
-        echo "Division result: $num1 / $num2 = " . ($num1 / $num2) . "&lt;br&gt;";
-    } catch (Exception $e) {
-        echo $e-&gt;getMessage() . "&lt;br&gt;";
+    if (!$dateTime || $dateTime-&gt;format($format) != $date) {
+        throw new Exception("Invalid date format.");
     }
 
-    // Date validation
-    try {
-        $format = 'Y-m-d';
-        $d = DateTime::createFromFormat($format, $date_input);
-        if ($d &amp;&amp; $d-&gt;format($format) === $date_input) {
-            echo "The date $date_input is valid.&lt;br&gt;";
-        } else {
-            throw new Exception("Date error: Invalid date format.");
-        }
-    } catch (Exception $e) {
-        echo $e-&gt;getMessage() . "&lt;br&gt;";
-    }
-
-    echo '&lt;/div&gt;';
+    echo "The date $date is valid.&lt;br&gt;";
+    return true;
 }
-?&gt;
 
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
+// Testing Division
+try {
+    echo divide(10, 2) . "&lt;br&gt;"; // valid
+    echo divide(10, 0) . "&lt;br&gt;"; // throws error
+} catch (Exception $e) {
+    echo "Division error: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+
+// Testing date format
+try {
+    checkDateFormat("2023-01-10"); // valid
+    checkDateFormat("10/01/2023"); // invalid
+} catch (Exception $e) {
+    echo "Date error: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+
+?&gt;</code></pre>
       </div>
     </section>
 
