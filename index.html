@@ -1,114 +1,328 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="tokyo-night">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Lab Programs - Ultimate (Full)</title>
 
   <!-- Prism base stylesheet (optional visual fallback) -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
 
   <!-- Prism scripts (defer, correct order) -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+  <script defer
+    src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
 
   <style>
     /* =================================================
        THEMES (dark + light variations)
        ================================================= */
-    :root[data-theme="tokyo-night"]{
-      --bg:#1a1b26; --card-bg:#16161e; --header-bg:#1a1b26cc; --border:#292e42;
-      --text:#c0caf5; --accent:#7aa2f7; --keyword:#bb9af7; --string:#9ece6a;
-      --function:#7aa2f7; --number:#ff9e64; --comment:#565f89; --tag:#f7768e; --operator:#89ddff;
+    :root[data-theme="tokyo-night"] {
+      --bg: #1a1b26;
+      --card-bg: #16161e;
+      --header-bg: #1a1b26cc;
+      --border: #292e42;
+      --text: #c0caf5;
+      --accent: #7aa2f7;
+      --keyword: #bb9af7;
+      --string: #9ece6a;
+      --function: #7aa2f7;
+      --number: #ff9e64;
+      --comment: #565f89;
+      --tag: #f7768e;
+      --operator: #89ddff;
     }
-    :root[data-theme="tokyo-night-deep"]{
-      --bg:#100f18; --card-bg:#0e0e15; --header-bg:#100f18cc; --border:#1f2230;
-      --text:#bfc8f4; --accent:#6e98e8; --keyword:#a57af0; --string:#94c85f;
-      --function:#6e98e8; --number:#ff8f4f; --comment:#4f547a; --tag:#ef7a93; --operator:#7fcfff;
+
+    :root[data-theme="tokyo-night-deep"] {
+      --bg: #100f18;
+      --card-bg: #0e0e15;
+      --header-bg: #100f18cc;
+      --border: #1f2230;
+      --text: #bfc8f4;
+      --accent: #6e98e8;
+      --keyword: #a57af0;
+      --string: #94c85f;
+      --function: #6e98e8;
+      --number: #ff8f4f;
+      --comment: #4f547a;
+      --tag: #ef7a93;
+      --operator: #7fcfff;
     }
-    :root[data-theme="tokyo-night-berry"]{
-      --bg:#171422; --card-bg:#14121b; --header-bg:#171422cc; --border:#2a2740;
-      --text:#d0c8f8; --accent:#9b84f1; --keyword:#caa6ff; --string:#9bdc7a;
-      --function:#9b84f1; --number:#ffb37a; --comment:#5a5773; --tag:#ff7fb6; --operator:#8fdfff;
+
+    :root[data-theme="tokyo-night-berry"] {
+      --bg: #171422;
+      --card-bg: #14121b;
+      --header-bg: #171422cc;
+      --border: #2a2740;
+      --text: #d0c8f8;
+      --accent: #9b84f1;
+      --keyword: #caa6ff;
+      --string: #9bdc7a;
+      --function: #9b84f1;
+      --number: #ffb37a;
+      --comment: #5a5773;
+      --tag: #ff7fb6;
+      --operator: #8fdfff;
     }
-    :root[data-theme="dracula"]{
-      --bg:#282a36; --card-bg:#343746; --header-bg:#282a36cc; --border:#44475a;
-      --text:#f8f8f2; --accent:#ff79c6; --keyword:#ff79c6; --string:#f1fa8c;
-      --function:#50fa7b; --number:#bd93f9; --comment:#6272a4; --tag:#ff79c6; --operator:#ff79c6;
+
+    :root[data-theme="dracula"] {
+      --bg: #282a36;
+      --card-bg: #343746;
+      --header-bg: #282a36cc;
+      --border: #44475a;
+      --text: #f8f8f2;
+      --accent: #ff79c6;
+      --keyword: #ff79c6;
+      --string: #f1fa8c;
+      --function: #50fa7b;
+      --number: #bd93f9;
+      --comment: #6272a4;
+      --tag: #ff79c6;
+      --operator: #ff79c6;
     }
-    :root[data-theme="monokai"]{
-      --bg:#272822; --card-bg:#32332a; --header-bg:#272822cc; --border:#3e3d32;
-      --text:#f8f8f2; --accent:#a6e22e; --keyword:#f92672; --string:#e6db74;
-      --function:#a6e22e; --number:#ae81ff; --comment:#75715e; --tag:#f92672; --operator:#f92672;
+
+    :root[data-theme="monokai"] {
+      --bg: #272822;
+      --card-bg: #32332a;
+      --header-bg: #272822cc;
+      --border: #3e3d32;
+      --text: #f8f8f2;
+      --accent: #a6e22e;
+      --keyword: #f92672;
+      --string: #e6db74;
+      --function: #a6e22e;
+      --number: #ae81ff;
+      --comment: #75715e;
+      --tag: #f92672;
+      --operator: #f92672;
     }
-    :root[data-theme="nord"]{
-      --bg:#2e3440; --card-bg:#3b4252; --header-bg:#2e3440cc; --border:#434c5e;
-      --text:#d8dee9; --accent:#88c0d0; --keyword:#81a1c1; --string:#a3be8c;
-      --function:#88c0d0; --number:#b48ead; --comment:#4c566a; --tag:#81a1c1; --operator:#81a1c1;
+
+    :root[data-theme="nord"] {
+      --bg: #2e3440;
+      --card-bg: #3b4252;
+      --header-bg: #2e3440cc;
+      --border: #434c5e;
+      --text: #d8dee9;
+      --accent: #88c0d0;
+      --keyword: #81a1c1;
+      --string: #a3be8c;
+      --function: #88c0d0;
+      --number: #b48ead;
+      --comment: #4c566a;
+      --tag: #81a1c1;
+      --operator: #81a1c1;
     }
-    :root[data-theme="solarized-light"]{
-      --bg:#fdf6e3; --card-bg:#f7f3e9; --header-bg:#fdf6e3cc; --border:#e0d9c6;
-      --text:#657b83; --accent:#268bd2; --keyword:#859900; --string:#2aa198;
-      --function:#268bd2; --number:#b58900; --comment:#93a1a1; --tag:#dc322f; --operator:#268bd2;
+
+    :root[data-theme="solarized-light"] {
+      --bg: #fdf6e3;
+      --card-bg: #f7f3e9;
+      --header-bg: #fdf6e3cc;
+      --border: #e0d9c6;
+      --text: #657b83;
+      --accent: #268bd2;
+      --keyword: #859900;
+      --string: #2aa198;
+      --function: #268bd2;
+      --number: #b58900;
+      --comment: #93a1a1;
+      --tag: #dc322f;
+      --operator: #268bd2;
     }
-    :root[data-theme="github-light"]{
-      --bg:#ffffff; --card-bg:#f6f8fa; --header-bg:#ffffffcc; --border:#e1e4e8;
-      --text:#24292e; --accent:#0366d6; --keyword:#d73a49; --string:#22863a;
-      --function:#0366d6; --number:#6f42c1; --comment:#6a737d; --tag:#d73a49; --operator:#0366d6;
+
+    :root[data-theme="github-light"] {
+      --bg: #ffffff;
+      --card-bg: #f6f8fa;
+      --header-bg: #ffffffcc;
+      --border: #e1e4e8;
+      --text: #24292e;
+      --accent: #0366d6;
+      --keyword: #d73a49;
+      --string: #22863a;
+      --function: #0366d6;
+      --number: #6f42c1;
+      --comment: #6a737d;
+      --tag: #d73a49;
+      --operator: #0366d6;
     }
-    :root[data-theme="paper-light"]{
-      --bg:#fbfbf9; --card-bg:#fffdf8; --header-bg:#fbfbf9cc; --border:#efe9df;
-      --text:#2b2b2b; --accent:#ff6b6b; --keyword:#c678dd; --string:#98c379;
-      --function:#61afef; --number:#d19a66; --comment:#7f8c6b; --tag:#e06c75; --operator:#61afef;
+
+    :root[data-theme="paper-light"] {
+      --bg: #fbfbf9;
+      --card-bg: #fffdf8;
+      --header-bg: #fbfbf9cc;
+      --border: #efe9df;
+      --text: #2b2b2b;
+      --accent: #ff6b6b;
+      --keyword: #c678dd;
+      --string: #98c379;
+      --function: #61afef;
+      --number: #d19a66;
+      --comment: #7f8c6b;
+      --tag: #e06c75;
+      --operator: #61afef;
     }
 
     /* =================================================
        GLOBAL LAYOUT + STYLING
        ================================================= */
-    html,body{height:100%}
-    body{
-      margin:0; font-family:'Segoe UI', Roboto, Arial, sans-serif;
-      background:var(--bg); color:var(--text);
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       transition: background-color .25s, color .25s;
     }
 
-    header{
-      position:sticky; top:0; z-index:999;
-      background:var(--header-bg); backdrop-filter: blur(6px);
-      border-bottom:1px solid var(--border); padding:10px 14px;
-      display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: var(--header-bg);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
     }
-    .header-title{ font-weight:800; color:var(--accent); letter-spacing:1px; text-transform:uppercase; }
 
-    .controls{ display:flex; gap:12px; align-items:center; }
-    select{
-      background:var(--card-bg); color:var(--text); border:1px solid var(--border);
-      padding:6px 10px; border-radius:6px; cursor:pointer;
+    .header-title {
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
-    .switch{ position:relative; width:40px; height:22px; display:inline-block; }
-    .switch input{ opacity:0; width:0; height:0; }
-    .slider{ position:absolute; top:0; left:0; right:0; bottom:0; background:#555; border-radius:22px; transition:.25s; }
-    .slider:before{ content:""; position:absolute; height:16px; width:16px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.25s; }
-    input:checked + .slider{ background:var(--accent); } input:checked + .slider:before{ transform:translateX(18px); }
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
 
-    .container{ max-width:900px; margin:12px auto 80px; padding:12px; }
+    select {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
 
-    .card{ background:var(--card-bg); border:1px solid var(--border); border-radius:8px; margin-bottom:20px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,0.28); }
-    .card-header{ padding:12px 14px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); }
-    .card-title{ color:var(--accent); font-weight:700; }
-    .copy-btn{ background:transparent; border:1px solid var(--border); color:var(--text); padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:700; }
-    .copy-btn:hover{ border-color:var(--accent); color:var(--accent); }
+    .switch {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      display: inline-block;
+    }
 
-    .code-box{ height:60vh; max-height:75vh; overflow:auto; background:transparent; }
-    pre{
-      margin:0 !important; padding:16px !important; font-family:'JetBrains Mono','Fira Code',monospace;
-      font-size:13px; line-height:1.6; white-space:pre; background:transparent !important; color:var(--text) !important;
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #555;
+      border-radius: 22px;
+      transition: .25s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: .25s;
+    }
+
+    input:checked+.slider {
+      background: var(--accent);
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(18px);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 12px auto 80px;
+      padding: 12px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+    }
+
+    .card-header {
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .code-box {
+      height: 60vh;
+      max-height: 75vh;
+      overflow: auto;
+      background: transparent;
+    }
+
+    pre {
+      margin: 0 !important;
+      padding: 16px !important;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre;
+      background: transparent !important;
+      color: var(--text) !important;
     }
 
     /* HIGHER-SPECIFICITY WRAP OVERRIDE (applies when <html> has class wrap-enabled) */
@@ -120,20 +334,61 @@
     }
 
     /* Prism token color overrides */
-    code[class*="language-"], pre[class*="language-"]{ color:var(--text) !important; }
-    pre[class*="language-"] .token.comment{ color:var(--comment) !important; font-style:italic !important; }
-    pre[class*="language-"] .token.punctuation{ color:var(--text) !important; opacity:0.75; }
-    pre[class*="language-"] .token.tag{ color:var(--tag) !important; }
-    pre[class*="language-"] .token.attr-name{ color:var(--accent) !important; }
-    pre[class*="language-"] .token.string, pre[class*="language-"] .token.attr-value{ color:var(--string) !important; }
-    pre[class*="language-"] .token.keyword{ color:var(--keyword) !important; }
-    pre[class*="language-"] .token.function{ color:var(--function) !important; }
-    pre[class*="language-"] .token.boolean, pre[class*="language-"] .token.number{ color:var(--number) !important; }
-    pre[class*="language-"] .token.operator{ color:var(--operator) !important; }
+    code[class*="language-"],
+    pre[class*="language-"] {
+      color: var(--text) !important;
+    }
 
-    @media (max-width:640px){
-      .code-box{ height:70vh; max-height:85vh; }
-      pre{ font-size:12px !important; padding:12px !important; }
+    pre[class*="language-"] .token.comment {
+      color: var(--comment) !important;
+      font-style: italic !important;
+    }
+
+    pre[class*="language-"] .token.punctuation {
+      color: var(--text) !important;
+      opacity: 0.75;
+    }
+
+    pre[class*="language-"] .token.tag {
+      color: var(--tag) !important;
+    }
+
+    pre[class*="language-"] .token.attr-name {
+      color: var(--accent) !important;
+    }
+
+    pre[class*="language-"] .token.string,
+    pre[class*="language-"] .token.attr-value {
+      color: var(--string) !important;
+    }
+
+    pre[class*="language-"] .token.keyword {
+      color: var(--keyword) !important;
+    }
+
+    pre[class*="language-"] .token.function {
+      color: var(--function) !important;
+    }
+
+    pre[class*="language-"] .token.boolean,
+    pre[class*="language-"] .token.number {
+      color: var(--number) !important;
+    }
+
+    pre[class*="language-"] .token.operator {
+      color: var(--operator) !important;
+    }
+
+    @media (max-width:640px) {
+      .code-box {
+        height: 70vh;
+        max-height: 85vh;
+      }
+
+      pre {
+        font-size: 12px !important;
+        padding: 12px !important;
+      }
     }
   </style>
 </head>
@@ -175,7 +430,8 @@
         <div class="card-title">1. Form Validation</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+      <div class="code-box">
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Simple Form Validation&lt;/title&gt;
@@ -222,7 +478,8 @@
         &lt;input type="submit" value="Submit"&gt;
     &lt;/form&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
+&lt;/html&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 2. Math Calculator -->
@@ -231,7 +488,8 @@
         <div class="card-title">2. Math Calculator</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+      <div class="code-box">
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Mathematical Evaluation Simple&lt;/title&gt;
@@ -255,7 +513,8 @@
         Result: &lt;input type="text" name="result" disabled&gt;
     &lt;/form&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
+&lt;/html&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 3. Animation -->
@@ -264,7 +523,8 @@
         <div class="card-title">3. Animation</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+      <div class="code-box">
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Dynamic Page With Animation&lt;/title&gt;
@@ -304,7 +564,8 @@
 &lt;body&gt;
     &lt;div id="movingLayer" class="layer"&gt;Web Programing&lt;/div&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
+&lt;/html&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 4. Sum of N -->
@@ -313,7 +574,8 @@
         <div class="card-title">4. Sum of N</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+      <div class="code-box">
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Sum of N Natural Numbers&lt;/title&gt;
@@ -344,7 +606,8 @@
     &lt;button onclick="calculateSum()"&gt;Calculate Sum&lt;/button&gt;
     &lt;p id="result"&gt;&lt;/p&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
+&lt;/html&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 5. Date Program -->
@@ -353,7 +616,8 @@
         <div class="card-title">5. Date Program</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+      <div class="code-box">
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Date program&lt;/title&gt;
@@ -376,7 +640,8 @@
         document.getElementById('p').innerHTML = formattedDate;
     &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
+&lt;/html&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 6. Student Info -->
@@ -385,7 +650,8 @@
         <div class="card-title">6. Student Info</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+      <div class="code-box">
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Student Information&lt;/title&gt;
@@ -435,7 +701,8 @@
         &lt;p id="tot"&gt;&lt;/p&gt;
     &lt;/form&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
+&lt;/html&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 7. Employee Pay -->
@@ -444,7 +711,8 @@
         <div class="card-title">7. Employee Pay</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+      <div class="code-box">
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Employee Pay Calculation&lt;/title&gt;
@@ -486,7 +754,8 @@
         &lt;p id="results"&gt;&lt;/p&gt;
     &lt;/form&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
+&lt;/html&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 8. Day Background -->
@@ -495,7 +764,8 @@
         <div class="card-title">8. Day Background</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-php">&lt;?php
+      <div class="code-box">
+        <pre><code class="language-php">&lt;?php
 $dayColors = array(
     "Monday" =&gt; "lightblue",
     "Tuesday" =&gt; "lightgreen",
@@ -523,7 +793,8 @@ if (isset($dayColors[$day])) {
     &lt;h2&gt;Today is &lt;?php echo $day; ?&gt;&lt;/h2&gt;
     &lt;p&gt;The background color changes based on the day of the week.&lt;/p&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
+&lt;/html&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 9. Prime & Fibo -->
@@ -532,7 +803,8 @@ if (isset($dayColors[$day])) {
         <div class="card-title">9. Prime & Fibo</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-php">&lt;?php
+      <div class="code-box">
+        <pre><code class="language-php">&lt;?php
 function generatePrimes($maxNumber) {
     echo "Prime numbers up to " . $maxNumber . ": ";
     $primes = array();
@@ -581,7 +853,8 @@ function FibonacciSeries($numTerms) {
 
 generatePrimes(50);
 FibonacciSeries(10);
-?&gt;</code></pre></div>
+?&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 10. Remove Duplicates -->
@@ -590,7 +863,8 @@ FibonacciSeries(10);
         <div class="card-title">10. Remove Duplicates</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-php">&lt;?php
+      <div class="code-box">
+        <pre><code class="language-php">&lt;?php
 function removeDuplicates(array $array) {
     $result = array_values(array_unique($array));
     return $result;
@@ -607,7 +881,8 @@ echo "&lt;br&gt;";
 echo "Unique List: ";
 print_r($uniqueList);
 echo "&lt;br&gt;";
-?&gt;</code></pre></div>
+?&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 11. Pattern -->
@@ -616,7 +891,8 @@ echo "&lt;br&gt;";
         <div class="card-title">11. Pattern</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-php">&lt;?php
+      <div class="code-box">
+        <pre><code class="language-php">&lt;?php
 $rows = 5;
 
 for ($i = $rows; $i &gt;= 1; $i--) {
@@ -631,7 +907,8 @@ for ($i = $rows; $i &gt;= 1; $i--) {
     
     echo "&lt;br&gt;";
 }
-?&gt;</code></pre></div>
+?&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 12. Search Criteria -->
@@ -640,7 +917,8 @@ for ($i = $rows; $i &gt;= 1; $i--) {
         <div class="card-title">12. Search Criteria</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-php">&lt;?php
+      <div class="code-box">
+        <pre><code class="language-php">&lt;?php
 $data = [
     [ 'id' =&gt; 1, 'name' =&gt; 'Srikantn', 'age' =&gt; 30 ],
     [ 'id' =&gt; 2, 'name' =&gt; 'Vikrant', 'age' =&gt; 28 ],
@@ -692,7 +970,8 @@ echo "&lt;br&gt;";
 
 echo "Results 2 (Name = Sanjay): ";
 print_r($results2);
-?&gt;</code></pre></div>
+?&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 13. Captcha -->
@@ -701,7 +980,8 @@ print_r($results2);
         <div class="card-title">13. Captcha</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-php">&lt;?php
+      <div class="code-box">
+        <pre><code class="language-php">&lt;?php
 function generateCaptchaCode($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $characterStringLength = strlen($characters);
@@ -715,7 +995,8 @@ function generateCaptchaCode($length) {
 }
 
 echo "Captcha Code is " . generateCaptchaCode(6);
-?&gt;</code></pre></div>
+?&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 14. Image Upload -->
@@ -724,7 +1005,8 @@ echo "Captcha Code is " . generateCaptchaCode(6);
         <div class="card-title">14. Image Upload</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-php">&lt;?php
+      <div class="code-box">
+        <pre><code class="language-php">&lt;?php
 $conn = new mysqli("localhost", "root", "mydb");
 if ($conn-&gt;connect_error) {
     die("Connection failed: " . $conn-&gt;connect_error);
@@ -783,7 +1065,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_FILES["image"])) {
 &lt;/body&gt;
 &lt;/html&gt;
 
-&lt;?php $conn-&gt;close(); ?&gt;</code></pre></div>
+&lt;?php $conn-&gt;close(); ?&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 15. File Read/Write -->
@@ -792,7 +1075,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_FILES["image"])) {
         <div class="card-title">15. File Read/Write</div>
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
       </div>
-      <div class="code-box"><pre><code class="language-php">&lt;?php
+      <div class="code-box">
+        <pre><code class="language-php">&lt;?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (isset($_POST['text']) && !empty($_POST['text'])) {
@@ -847,14 +1131,430 @@ $read_output = $read_output ?? "Choose file to upload and read contents.";
         &lt;p&gt;&lt;?php echo $read_output; ?&gt;&lt;/p&gt;
     &lt;/form&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
+&lt;/html&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 16. Student CRUD -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">16. Student CRUD</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box">
+        <pre><code class="language-php">&lt;?php
+$host = "localhost";
+$user = "root";
+$password = "";
+$db = "school";
+
+$conn = mysqli_connect($host, $user, $password, $db);
+if (!$conn) { die("Connection failed: " . mysqli_connect_error()); }
+
+$id = $name = $email = $phone = $father = $mother = "";
+$error = "";
+
+// Add or Update
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id = $_POST['id'] ?? '';
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $phone = trim($_POST['phone']);
+    $father = trim($_POST['father_name']);
+    $mother = trim($_POST['mother_name']);
+
+    if (empty($name)) {
+        $error = "Name is required!";
+    } else {
+        $name = mysqli_real_escape_string($conn, $name);
+        $email = mysqli_real_escape_string($conn, $email);
+        $phone = mysqli_real_escape_string($conn, $phone);
+        $father = mysqli_real_escape_string($conn, $father);
+        $mother = mysqli_real_escape_string($conn, $mother);
+
+        if ($id) {
+            $id = (int)$id;
+            $query = "UPDATE students SET name='$name', email='$email', phone='$phone',
+                      father_name='$father', mother_name='$mother' WHERE id=$id";
+        } else {
+            $query = "INSERT INTO students (name, email, phone, father_name, mother_name)
+                      VALUES ('$name', '$email', '$phone', '$father', '$mother')";
+        }
+
+        if (mysqli_query($conn, $query)) {
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        } else {
+            $error = "Database error: " . mysqli_error($conn);
+        }
+    }
+}
+
+// Delete
+if (isset($_GET['delete'])) {
+    $delete_id = (int)$_GET['delete'];
+    mysqli_query($conn, "DELETE FROM students WHERE id=$delete_id");
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+
+// Edit
+$edit = null;
+if (isset($_GET['edit'])) {
+    $edit_id = (int)$_GET['edit'];
+    $result = mysqli_query($conn, "SELECT * FROM students WHERE id=$edit_id");
+    $edit = mysqli_fetch_assoc($result);
+    if ($edit) {
+        $id = $edit['id'];
+        $name = $edit['name'];
+        $email = $edit['email'];
+        $phone = $edit['phone'];
+        $father = $edit['father_name'];
+        $mother = $edit['mother_name'];
+    }
+}
+
+$result = mysqli_query($conn, "SELECT * FROM students");
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Student CRUD&lt;/title&gt;
+&lt;style&gt;
+form { margin-bottom: 30px; }
+label { display: block; margin-top: 8px; }
+input[type="text"], input[type="email"] { width: 300px; padding: 5px; }
+.error { color: red; margin-bottom: 15px; }
+table { border-collapse: collapse; width: 80%; margin-top: 20px; }
+table, th, td { border: 1px solid #ccc; }
+th, td { padding: 8px; text-align: left; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h2&gt;Add / Edit Student&lt;/h2&gt;
+&lt;?php if ($error): ?&gt;
+&lt;div class="error"&gt;&lt;?= htmlspecialchars($error) ?&gt;&lt;/div&gt;
+&lt;?php endif; ?&gt;
+
+&lt;form method="post" action=""&gt;
+&lt;input type="hidden" name="id" value="&lt;?= htmlspecialchars($id) ?&gt;"&gt;
+&lt;label&gt;Name:&lt;/label&gt;
+&lt;input type="text" name="name" value="&lt;?= htmlspecialchars($name) ?&gt;"&gt;
+&lt;label&gt;Email:&lt;/label&gt;
+&lt;input type="email" name="email" value="&lt;?= htmlspecialchars($email) ?&gt;"&gt;
+&lt;label&gt;Phone:&lt;/label&gt;
+&lt;input type="text" name="phone" value="&lt;?= htmlspecialchars($phone) ?&gt;"&gt;
+&lt;label&gt;Father Name:&lt;/label&gt;
+&lt;input type="text" name="father_name" value="&lt;?= htmlspecialchars($father) ?&gt;"&gt;
+&lt;label&gt;Mother Name:&lt;/label&gt;
+&lt;input type="text" name="mother_name" value="&lt;?= htmlspecialchars($mother) ?&gt;"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;button type="submit"&gt;&lt;?= $id ? 'Update' : 'Add' ?&gt;&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;h2&gt;Students List&lt;/h2&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Email&lt;/th&gt;&lt;th&gt;Phone&lt;/th&gt;&lt;th&gt;Father&lt;/th&gt;&lt;th&gt;Mother&lt;/th&gt;&lt;th&gt;Action&lt;/th&gt;
+&lt;/tr&gt;
+&lt;?php while ($row = mysqli_fetch_assoc($result)): ?&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;?= htmlspecialchars($row['name']) ?&gt;&lt;/td&gt;
+&lt;td&gt;&lt;?= htmlspecialchars($row['email']) ?&gt;&lt;/td&gt;
+&lt;td&gt;&lt;?= htmlspecialchars($row['phone']) ?&gt;&lt;/td&gt;
+&lt;td&gt;&lt;?= htmlspecialchars($row['father_name']) ?&gt;&lt;/td&gt;
+&lt;td&gt;&lt;?= htmlspecialchars($row['mother_name']) ?&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;a href="?edit=&lt;?= (int)$row['id'] ?&gt;"&gt;Edit&lt;/a&gt; |
+&lt;a href="?delete=&lt;?= (int)$row['id'] ?&gt;" onclick="return confirm('Are you sure?')"&gt;Delete&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;?php endwhile; ?&gt;
+&lt;/table&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 17. Input Validation -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">17. Input Validation</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box">
+        <pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Input Validation&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;?php
+$name = $email = $mobile = $age = "";
+$nameErr = $emailErr = $mobileErr = $ageErr = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (empty($_POST["name"])) { $nameErr = "Name is required"; }
+    else { $name = htmlspecialchars($_POST["name"]); }
+
+    if (empty($_POST["email"])) { $emailErr = "Email is required"; }
+    elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+        $emailErr = "Invalid email format";
+    } else { $email = htmlspecialchars($_POST["email"]); }
+
+    if (empty($_POST["mobile"])) { $mobileErr = "Mobile number is required"; }
+    elseif (!preg_match("/^[0-9]{10}$/", $_POST["mobile"])) {
+        $mobileErr = "Invalid mobile number";
+    } else { $mobile = htmlspecialchars($_POST["mobile"]); }
+
+    if (empty($_POST["age"])) { $ageErr = "Age is required"; }
+    elseif (!is_numeric($_POST["age"]) || $_POST["age"] &lt;= 0 || $_POST["age"] &gt; 120) {
+        $ageErr = "Invalid age";
+    } else { $age = htmlspecialchars($_POST["age"]); }
+}
+?&gt;
+
+&lt;h2&gt;PHP Form Validation Example&lt;/h2&gt;
+&lt;form method="post" action=""&gt;
+Name: &lt;input type="text" name="name" value="&lt;?php echo $name; ?&gt;"&gt;
+&lt;span style="color:red;"&gt;* &lt;?php echo $nameErr; ?&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;
+
+Email: &lt;input type="text" name="email" value="&lt;?php echo $email; ?&gt;"&gt;
+&lt;span style="color:red;"&gt;* &lt;?php echo $emailErr; ?&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;
+
+Mobile: &lt;input type="text" name="mobile" value="&lt;?php echo $mobile; ?&gt;"&gt;
+&lt;span style="color:red;"&gt;* &lt;?php echo $mobileErr; ?&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;
+
+Age: &lt;input type="text" name="age" value="&lt;?php echo $age; ?&gt;"&gt;
+&lt;span style="color:red;"&gt;* &lt;?php echo $ageErr; ?&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;input type="submit" name="submit" value="Submit"&gt;
+&lt;/form&gt;
+
+&lt;?php
+if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; !$nameErr &amp;&amp; !$emailErr &amp;&amp; !$mobileErr &amp;&amp; !$ageErr) {
+    echo "&lt;h3&gt;Submitted Data:&lt;/h3&gt;";
+    echo "Name: $name&lt;br&gt;";
+    echo "Email: $email&lt;br&gt;";
+    echo "Mobile: $mobile&lt;br&gt;";
+    echo "Age: $age&lt;br&gt;";
+}
+?&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 18. Cookie Example -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">18. Cookie Example</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box">
+        <pre><code class="language-php">&lt;?php
+$username = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; !empty($_POST["username"])) {
+    $username = htmlspecialchars($_POST["username"]);
+    setcookie("username", $username, time() + (86400 * 30));
+    header("Location: " . $_SERVER["PHP_SELF"]);
+    exit();
+}
+
+if (isset($_COOKIE["username"])) {
+    $username = $_COOKIE["username"];
+}
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Cookie Example&lt;/title&gt;
+&lt;style&gt;
+body { font-family: Arial; text-align: center; }
+.message {
+    padding: 10px; font-weight: bold;
+    width: 300px; margin: 0 auto 20px;
+    border: 1px solid #ccc; background-color: #f2f2f2;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;?php
+if (!empty($username))
+    echo "&lt;div class='message'&gt;Welcome back, $username!&lt;/div&gt;";
+else
+    echo "&lt;div class='message'&gt;Welcome, guest! Cookie not set.&lt;/div&gt;";
+?&gt;
+
+&lt;form method="post" action=""&gt;
+&lt;label&gt;Enter your name:&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+&lt;input type="text" name="username" value="&lt;?php echo $username; ?&gt;" required&gt;&lt;br&gt;&lt;br&gt;
+&lt;input type="submit" value="Set Cookie"&gt;
+&lt;/form&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 19. BCA Academy -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">19. BCA Academy</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box">
+        <pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;BCA Academy&lt;/title&gt;
+&lt;style&gt;
+body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f4f9; }
+header { background: #003366; color: white; padding: 30px 0; text-align: center; }
+nav { background: #0059b3; padding: 10px; text-align:center; }
+nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
+nav a:hover { text-decoration: underline; }
+
+.container { display:flex; justify-content:center; gap:30px; margin:40px auto; max-width:900px; }
+.card { background:white; padding:20px; border-radius:8px; box-shadow:0 0 10px #ccc; width:45%; }
+
+footer { background:#003366; color:white; text-align:center; padding:15px 0; margin-top:50px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;header&gt;
+&lt;h1&gt;BCA Academy&lt;/h1&gt;
+&lt;p&gt;Your Future Begins Here&lt;/p&gt;
+&lt;/header&gt;
+
+&lt;nav&gt;
+&lt;a href="#pu"&gt;PU College&lt;/a&gt;
+&lt;a href="#degree"&gt;Degree College&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;div class="container"&gt;
+&lt;div class="card" id="pu"&gt;
+&lt;h2&gt;PU College&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Science (PCMB, PCMC)&lt;/li&gt;
+&lt;li&gt;Commerce (CEBA, SEBA, HEBA)&lt;/li&gt;
+&lt;li&gt;Arts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div class="card" id="degree"&gt;
+&lt;h2&gt;Degree College&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;BCA – Computer Applications&lt;/li&gt;
+&lt;li&gt;BCom – Commerce &amp; Finance&lt;/li&gt;
+&lt;li&gt;BA – Arts &amp; Humanities&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;footer&gt;
+&amp;copy; &lt;?php echo date("Y"); ?&gt; BCA Academy. All Rights Reserved.
+&lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 20. Exception Handling -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">20. Exception Handling</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="code-box">
+        <pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;PHP Exception Handling&lt;/title&gt;
+&lt;style&gt;
+body { font-family: Arial; background:#f4f4f4; padding:30px; }
+.form-box, .result-box {
+ background:#fff; padding:20px; border:1px solid #ccc;
+ box-shadow:2px 2px 10px #aaa; max-width:500px; margin:auto;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;?php
+$num1 = $_POST['num1'] ?? '';
+$num2 = $_POST['num2'] ?? '';
+$date_input = $_POST['date_input'] ?? '';
+?&gt;
+
+&lt;div class="form-box"&gt;
+&lt;h2&gt;Exception Handling Form&lt;/h2&gt;
+&lt;form method="post"&gt;
+&lt;label&gt;Enter numerator:&lt;/label&gt;
+&lt;input type="text" name="num1" value="&lt;?php echo $num1; ?&gt;" required&gt;
+
+&lt;label&gt;Enter denominator:&lt;/label&gt;
+&lt;input type="text" name="num2" value="&lt;?php echo $num2; ?&gt;" required&gt;
+
+&lt;label&gt;Enter date (YYYY-MM-DD):&lt;/label&gt;
+&lt;input type="text" name="date_input" value="&lt;?php echo $date_input; ?&gt;" required&gt;
+
+&lt;input type="submit" name="submit" value="Submit"&gt;
+&lt;/form&gt;
+&lt;/div&gt;
+
+&lt;?php
+if (isset($_POST['submit'])) {
+    echo '&lt;div class="result-box"&gt;';
+
+    // Division handling
+    try {
+        if (!is_numeric($num1) || !is_numeric($num2)) {
+            throw new Exception("Division error: Inputs must be numbers.");
+        }
+        if ($num2 == 0) {
+            throw new Exception("Division error: Cannot divide by zero.");
+        }
+        echo "Division result: $num1 / $num2 = " . ($num1 / $num2) . "&lt;br&gt;";
+    } catch (Exception $e) {
+        echo $e-&gt;getMessage() . "&lt;br&gt;";
+    }
+
+    // Date validation
+    try {
+        $format = 'Y-m-d';
+        $d = DateTime::createFromFormat($format, $date_input);
+        if ($d &amp;&amp; $d-&gt;format($format) === $date_input) {
+            echo "The date $date_input is valid.&lt;br&gt;";
+        } else {
+            throw new Exception("Date error: Invalid date format.");
+        }
+    } catch (Exception $e) {
+        echo $e-&gt;getMessage() . "&lt;br&gt;";
+    }
+
+    echo '&lt;/div&gt;';
+}
+?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
     </section>
 
   </main>
 
   <script>
     // Theme switch
-    document.getElementById('themeSelect').addEventListener('change', function() {
+    document.getElementById('themeSelect').addEventListener('change', function () {
       document.documentElement.setAttribute('data-theme', this.value);
     });
 
@@ -900,7 +1600,7 @@ $read_output = $read_output ?? "Choose file to upload and read contents.";
         try {
           const ta = document.createElement('textarea');
           ta.value = text;
-          ta.setAttribute('readonly','');
+          ta.setAttribute('readonly', '');
           ta.style.position = 'absolute';
           ta.style.left = '-9999px';
           document.body.appendChild(ta);
@@ -936,11 +1636,12 @@ $read_output = $read_output ?? "Choose file to upload and read contents.";
     }
 
     // Ensure Prism highlights after deferred scripts load
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
       if (window.Prism && typeof Prism.highlightAll === 'function') {
         try { Prism.highlightAll(); } catch (err) { console.warn('Prism.highlightAll failed:', err); }
       }
     });
   </script>
 </body>
+
 </html>
